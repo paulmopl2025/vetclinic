@@ -219,37 +219,37 @@
 ## 📅 Módulo de Citas
 
 ### 1. Domain Layer
-- [ ] Entity: Cita
-- [ ] Value Object: EstadoCita (pendiente, confirmada, cancelada, completada)
+- [x] Entity: Cita
+- [x] Value Object: EstadoCita (pendiente, confirmada, cancelada, completada)
 - [ ] Value Object: FechaHora
-- [ ] Repository Interface: CitaRepository
+- [x] Repository Interface: CitaRepository
 
 ### 2. Application Layer
-- [ ] UseCase: ScheduleCita
-- [ ] UseCase: UpdateCita
-- [ ] UseCase: CancelCita
-- [ ] UseCase: ConfirmCita
+- [x] UseCase: ScheduleCita
+- [x] UseCase: UpdateCita
+- [x] UseCase: CancelCita
+- [x] UseCase: ConfirmCita
 - [ ] UseCase: CheckAvailability
-- [ ] UseCase: GetCitasByVeterinario
-- [ ] UseCase: GetCitasByCliente
-- [ ] DTO: CitaDTO, CreateCitaDTO, UpdateCitaDTO
+- [x] UseCase: GetCitasByVeterinario
+- [x] UseCase: GetCitasByCliente
+- [x] DTO: CitaDTO, CreateCitaDTO, UpdateCitaDTO
 
 ### 3. Infrastructure Layer
-- [ ] JPA Repository: CitaJpaRepository
+- [x] JPA Repository: CitaJpaRepository
 - [ ] Repository Implementation: CitaRepositoryImpl
-- [ ] Mapper: CitaMapper
+- [x] Mapper: CitaMapper
 - [ ] Service: DisponibilidadService
 
 ### 4. Presentation Layer
-- [ ] Controller: CitaController
+- [x] Controller: CitaController
 - [ ] Endpoints:
-  - [ ] GET /api/citas - Listar citas (paginado, filtrado)
-  - [ ] GET /api/citas/{id} - Obtener cita por ID
+  - [x] GET /api/citas - Listar citas (paginado, filtrado)
+  - [x] GET /api/citas/{id} - Obtener cita por ID
   - [ ] GET /api/citas/disponibilidad - Verificar disponibilidad
-  - [ ] POST /api/citas - Agendar cita
-  - [ ] PUT /api/citas/{id} - Actualizar cita
-  - [ ] PATCH /api/citas/{id}/confirmar - Confirmar cita
-  - [ ] PATCH /api/citas/{id}/cancelar - Cancelar cita
+  - [x] POST /api/citas - Agendar cita
+  - [x] PUT /api/citas/{id} - Actualizar cita
+  - [x] PATCH /api/citas/{id}/confirmar - Confirmar cita
+  - [x] PATCH /api/citas/{id}/cancelar - Cancelar cita
 
 ---
 
@@ -436,7 +436,7 @@
 - [x] Módulo de Servicios
 
 ### Fase 3: Módulos de Negocio (Semanas 6-8)
-- [ ] Módulo de Citas
+- [x] Módulo de Citas
 - [ ] Módulo de Historial Médico
 - [ ] Módulo de Clínica
 - [ ] Integración entre módulos
@@ -457,9 +457,9 @@
 
 ## 🔄 Estado Actual del Proyecto
 
-**Fase Actual:** Fase 2: Módulos Core (Completada)
+**Fase Actual:** Fase 3: Módulos de Negocio (En progreso)
 **Última Actualización:** 2025-11-19
-**Progreso General:** 50%
+**Progreso General:** 60%
 
 ---
 
