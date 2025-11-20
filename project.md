@@ -256,31 +256,31 @@
 ## 📋 Módulo de Historial Médico
 
 ### 1. Domain Layer
-- [ ] Entity: HistorialMedico
-- [ ] Entity: RegistroMedico (peso, vacunas, tratamientos)
+- [x] Entity: HistorialMedico
+- [x] Entity: RegistroMedico (peso, vacunas, tratamientos)
 - [ ] Value Object: Diagnostico
 - [ ] Value Object: Tratamiento
-- [ ] Repository Interface: HistorialMedicoRepository
+- [x] Repository Interface: HistorialMedicoRepository
 
 ### 2. Application Layer
-- [ ] UseCase: CreateHistorial
-- [ ] UseCase: AddRegistroMedico
-- [ ] UseCase: GetHistorialByMascota
+- [x] UseCase: CreateHistorial
+- [x] UseCase: AddRegistroMedico
+- [x] UseCase: GetHistorialByMascota
 - [ ] UseCase: GetVacunasPendientes
-- [ ] DTO: HistorialMedicoDTO, RegistroMedicoDTO
+- [x] DTO: HistorialMedicoDTO, RegistroMedicoDTO
 
 ### 3. Infrastructure Layer
-- [ ] JPA Repository: HistorialMedicoJpaRepository
+- [x] JPA Repository: HistorialMedicoJpaRepository
 - [ ] Repository Implementation: HistorialMedicoRepositoryImpl
-- [ ] Mapper: HistorialMedicoMapper
+- [x] Mapper: HistorialMedicoMapper
 
 ### 4. Presentation Layer
-- [ ] Controller: HistorialMedicoController
-- [ ] Endpoints:
-  - [ ] GET /api/historiales/mascota/{mascotaId} - Historial completo
-  - [ ] POST /api/historiales - Crear historial
-  - [ ] POST /api/historiales/{id}/registros - Agregar registro
-  - [ ] GET /api/historiales/{id}/registros - Listar registros
+- [x] Controller: HistorialMedicoController
+- [x] Endpoints:
+  - [x] GET /api/medical-records/pet/{petId} - Historial completo
+  - [x] POST /api/medical-records - Crear historial
+  - [x] PUT /api/medical-records/{id} - Actualizar registro
+  - [x] GET /api/medical-records - Listar registros
 
 ---
 
@@ -437,7 +437,7 @@
 
 ### Fase 3: Módulos de Negocio (Semanas 6-8)
 - [x] Módulo de Citas
-- [ ] Módulo de Historial Médico
+- [x] Módulo de Historial Médico
 - [ ] Módulo de Clínica
 - [ ] Integración entre módulos
 
@@ -459,7 +459,7 @@
 
 **Fase Actual:** Fase 3: Módulos de Negocio (En progreso)
 **Última Actualización:** 2025-11-19
-**Progreso General:** 70%
+**Progreso General:** 75%
 
 ---
 
