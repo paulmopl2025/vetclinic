@@ -287,27 +287,27 @@
 ## 🏥 Módulo de Clínica (Gestión Operativa)
 
 ### 1. Domain Layer
-- [ ] Entity: Clinica
+- [x] Entity: Clinica
 - [ ] Value Object: HorarioAtencion
 - [ ] Value Object: CapacidadAtencion
-- [ ] Repository Interface: ClinicaRepository
+- [x] Repository Interface: ClinicaRepository
 
 ### 2. Application Layer
-- [ ] UseCase: ConfigureClinica
-- [ ] UseCase: UpdateHorarios
-- [ ] UseCase: GetEstadisticas
-- [ ] DTO: ClinicaDTO, EstadisticasDTO
+- [x] UseCase: ConfigureClinica
+- [x] UseCase: UpdateHorarios
+- [x] UseCase: GetEstadisticas
+- [x] DTO: ClinicaDTO, EstadisticasDTO
 
 ### 3. Infrastructure Layer
-- [ ] JPA Repository: ClinicaJpaRepository
+- [x] JPA Repository: ClinicaJpaRepository
 - [ ] Repository Implementation: ClinicaRepositoryImpl
 
 ### 4. Presentation Layer
-- [ ] Controller: ClinicaController
-- [ ] Endpoints:
-  - [ ] GET /api/clinica - Obtener configuración
-  - [ ] PUT /api/clinica - Actualizar configuración
-  - [ ] GET /api/clinica/estadisticas - Estadísticas generales
+- [x] Controller: ClinicaController
+- [x] Endpoints:
+  - [x] GET /api/clinic - Obtener configuración
+  - [x] PUT /api/clinic - Actualizar configuración
+  - [x] GET /api/clinic/stats - Estadísticas generales
 
 ---
 
@@ -438,7 +438,7 @@
 ### Fase 3: Módulos de Negocio (Semanas 6-8)
 - [x] Módulo de Citas
 - [x] Módulo de Historial Médico
-- [ ] Módulo de Clínica
+- [x] Módulo de Clínica
 - [ ] Integración entre módulos
 
 ### Fase 4: Refinamiento (Semanas 9-10)
@@ -459,7 +459,7 @@
 
 **Fase Actual:** Fase 3: Módulos de Negocio (Completada)
 **Última Actualización:** 2025-11-19
-**Progreso General:** 80%
+**Progreso General:** 85%
 
 ---
 

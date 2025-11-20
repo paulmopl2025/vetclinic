@@ -13,5 +13,7 @@ public interface AppointmentJpaRepository extends JpaRepository<Appointment, Lon
 
     List<Appointment> findByVetId(Long vetId);
 
+    long countByStatus(AppointmentStatus status);
+
     List<Appointment> findByStatus(AppointmentStatus status);
 }
