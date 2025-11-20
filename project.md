@@ -70,6 +70,7 @@
 - [x] PasswordEncoder - BCrypt para encriptación
 - [ ] CorsConfiguration - Configuración de CORS
 - [x] AuthenticationEntryPoint - Manejo de errores de autenticación
+- [x] OpenApiConfig - Configuración de Swagger UI con JWT <!-- id: 21 -->
 
 ### 3. Endpoints de Autenticación
 - [x] POST /api/auth/register - Registro de usuarios
@@ -89,7 +90,7 @@
 ## 👥 Módulo de Usuarios y Roles
 
 ### 1. Domain Layer
-- [ ] Entity: User
+- [x] Entity: User
 - [ ] Value Object: Email
 - [ ] Value Object: PhoneNumber
 - [ ] Repository Interface: UserRepository
@@ -99,21 +100,21 @@
 - [ ] UseCase: UpdateUser
 - [ ] UseCase: DeactivateUser
 - [ ] UseCase: AssignRole
-- [ ] DTO: UserDTO, CreateUserDTO, UpdateUserDTO
+- [x] DTO: UserDTO, CreateUserDTO, UpdateUserDTO
 
 ### 3. Infrastructure Layer
-- [ ] JPA Repository: UserJpaRepository
+- [x] JPA Repository: UserJpaRepository
 - [ ] Repository Implementation: UserRepositoryImpl
-- [ ] Mapper: UserMapper
+- [x] Mapper: UserMapper
 
 ### 4. Presentation Layer
-- [ ] Controller: UserController
+- [x] Controller: UserController
 - [ ] Endpoints:
-  - [ ] GET /api/users - Listar usuarios
-  - [ ] GET /api/users/{id} - Obtener usuario por ID
+  - [x] GET /api/users - Listar usuarios
+  - [x] GET /api/users/{id} - Obtener usuario por ID
   - [ ] POST /api/users - Crear usuario
-  - [ ] PUT /api/users/{id} - Actualizar usuario
-  - [ ] DELETE /api/users/{id} - Desactivar usuario
+  - [x] PUT /api/users/{id} - Actualizar usuario
+  - [x] DELETE /api/users/{id} - Desactivar usuario
 
 ---
 
