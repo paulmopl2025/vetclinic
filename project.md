@@ -314,10 +314,10 @@
 ## 🔍 Funcionalidades Transversales
 
 ### 1. Manejo de Excepciones
-- [ ] GlobalExceptionHandler
-- [ ] Custom Exceptions: EntityNotFoundException, BusinessException, etc.
-- [ ] ErrorResponse DTO
-- [ ] Validación de errores de validación (@Valid)
+- [x] GlobalExceptionHandler
+- [x] Custom Exceptions: EntityNotFoundException, BusinessException, etc.
+- [x] ErrorResponse DTO
+- [x] Validación de errores de validación (@Valid)
 
 ### 2. Validaciones
 - [ ] Bean Validation (@NotNull, @NotBlank, @Email, etc.)
@@ -331,8 +331,8 @@
 - [ ] JPA Auditing configuration
 
 ### 4. Paginación y Ordenamiento
-- [ ] Implementar Pageable en repositorios
-- [ ] PagedResponse DTO
+- [x] Implementar Pageable en repositorios
+- [x] PagedResponse DTO
 - [ ] Sorting y filtering
 
 ### 5. Logging
@@ -459,7 +459,7 @@
 
 **Fase Actual:** Fase 3: Módulos de Negocio (En progreso)
 **Última Actualización:** 2025-11-19
-**Progreso General:** 60%
+**Progreso General:** 65%
 
 ---
 
