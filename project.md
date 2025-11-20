@@ -186,33 +186,33 @@
 ## 💉 Módulo de Servicios Veterinarios
 
 ### 1. Domain Layer
-- [ ] Entity: Servicio
-- [ ] Value Object: TipoServicio (vacunación, control, urgencia, cirugía)
+- [x] Entity: Servicio
+- [x] Value Object: TipoServicio (vacunación, control, urgencia, cirugía)
 - [ ] Value Object: Costo
 - [ ] Value Object: Duración
-- [ ] Repository Interface: ServicioRepository
+- [x] Repository Interface: ServicioRepository
 
 ### 2. Application Layer
-- [ ] UseCase: CreateServicio
-- [ ] UseCase: UpdateServicio
-- [ ] UseCase: SearchServicioByType
+- [x] UseCase: CreateServicio
+- [x] UseCase: UpdateServicio
+- [x] UseCase: SearchServicioByType
 - [ ] UseCase: CalculateCosto
-- [ ] DTO: ServicioDTO, CreateServicioDTO, UpdateServicioDTO
+- [x] DTO: ServicioDTO, CreateServicioDTO, UpdateServicioDTO
 
 ### 3. Infrastructure Layer
-- [ ] JPA Repository: ServicioJpaRepository
+- [x] JPA Repository: ServicioJpaRepository
 - [ ] Repository Implementation: ServicioRepositoryImpl
-- [ ] Mapper: ServicioMapper
+- [x] Mapper: ServicioMapper
 
 ### 4. Presentation Layer
-- [ ] Controller: ServicioController
+- [x] Controller: ServicioController
 - [ ] Endpoints:
-  - [ ] GET /api/servicios - Listar servicios
-  - [ ] GET /api/servicios/{id} - Obtener servicio por ID
-  - [ ] GET /api/servicios/tipo/{tipo} - Buscar por tipo
-  - [ ] POST /api/servicios - Crear servicio
-  - [ ] PUT /api/servicios/{id} - Actualizar servicio
-  - [ ] DELETE /api/servicios/{id} - Desactivar servicio
+  - [x] GET /api/servicios - Listar servicios
+  - [x] GET /api/servicios/{id} - Obtener servicio por ID
+  - [x] GET /api/servicios/tipo/{tipo} - Buscar por tipo
+  - [x] POST /api/servicios - Crear servicio
+  - [x] PUT /api/servicios/{id} - Actualizar servicio
+  - [x] DELETE /api/servicios/{id} - Desactivar servicio
 
 ---
 
@@ -433,7 +433,7 @@
 - [x] Módulo de Usuarios
 - [x] Módulo de Clientes
 - [x] Módulo de Mascotas
-- [ ] Módulo de Servicios
+- [x] Módulo de Servicios
 
 ### Fase 3: Módulos de Negocio (Semanas 6-8)
 - [ ] Módulo de Citas
@@ -457,9 +457,9 @@
 
 ## 🔄 Estado Actual del Proyecto
 
-**Fase Actual:** Fase 2: Módulos Core
+**Fase Actual:** Fase 2: Módulos Core (Completada)
 **Última Actualización:** 2025-11-19
-**Progreso General:** 40%
+**Progreso General:** 50%
 
 ---
 
