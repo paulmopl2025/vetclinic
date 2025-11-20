@@ -33,17 +33,25 @@ public class DataInitializer implements CommandLineRunner {
         Role recepcionistaRole = roleRepository.findByName("ROLE_RECEPCIONISTA")
                 .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_RECEPCIONISTA").build()));
 
-        // Create admin user if not exists
-        if (userRepository.findByUsername("admin").isEmpty()) {
-            User admin = User.builder()
+        // Create or update admin user
+        User admin = userRepository.findByUsername("admin").orElse(null);
+        if (admin == null) {
+            admin = User.builder()
                     .username("admin")
                     .email("admin@vetclinic.com")
                     .password(passwordEncoder.encode("admin123"))
                     .roles(Set.of(adminRole))
                     .build();
-
             userRepository.save(admin);
             log.info("Admin user created: admin / admin123");
+        } else {
+            // Update password if it was created with wrong password from data.sql
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            if (admin.getRoles().isEmpty() || !admin.getRoles().contains(adminRole)) {
+                admin.setRoles(Set.of(adminRole));
+            }
+            userRepository.save(admin);
+            log.info("Admin user updated: admin / admin123");
         }
     }
 }

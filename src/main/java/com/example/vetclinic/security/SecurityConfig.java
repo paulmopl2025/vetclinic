@@ -44,6 +44,12 @@ public class SecurityConfig {
                                 "/swagger-ui/**"))
                         .permitAll()
                         .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher(
+                                "/swagger-ui.html"))
+                        .permitAll()
+                        .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher(
+                                "/webjars/**"))
+                        .permitAll()
+                        .requestMatchers(new org.springframework.security.web.util.matcher.AntPathRequestMatcher(
                                 "/h2-console/**"))
                         .permitAll()
                         .anyRequest().authenticated())
