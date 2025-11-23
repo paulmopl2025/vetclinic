@@ -43,7 +43,7 @@ public class OwnersWindow extends BasicWindow {
             new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
                     .setTitle("Options")
                     .setDescription("Select an action")
-                    .addAction("Edit", () -> MessageDialog.showMessageDialog(gui, "Info", "Edit not implemented yet"))
+                    .addAction("Edit", this::editOwner)
                     .addAction("Delete", this::deleteOwner)
                     .addAction("Cancel", () -> {
                     })
@@ -120,6 +120,55 @@ public class OwnersWindow extends BasicWindow {
             } else {
                 MessageDialog.showMessageDialog(gui, "Error", "Failed to delete owner.");
             }
+        }
+    }
+
+    private void editOwner() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            MessageDialog.showMessageDialog(gui, "Warning", "Please select an owner to edit.");
+            return;
+        }
+
+        String idStr = table.getTableModel().getCell(0, selectedRow);
+        Long id = Long.parseLong(idStr);
+
+        // Pre-fill with existing data (ideally we fetch fresh data, but table data is
+        // okay for now)
+        String currentFirstName = table.getTableModel().getCell(1, selectedRow);
+        String currentLastName = table.getTableModel().getCell(2, selectedRow);
+        String currentEmail = table.getTableModel().getCell(3, selectedRow);
+        String currentPhone = table.getTableModel().getCell(4, selectedRow);
+        String currentCity = table.getTableModel().getCell(5, selectedRow);
+
+        String firstName = new TextInputDialogBuilder().setTitle("First Name").setInitialContent(currentFirstName)
+                .build().showDialog(gui);
+        if (firstName == null)
+            return;
+
+        String lastName = new TextInputDialogBuilder().setTitle("Last Name").setInitialContent(currentLastName).build()
+                .showDialog(gui);
+        if (lastName == null)
+            return;
+
+        String email = new TextInputDialogBuilder().setTitle("Email").setInitialContent(currentEmail).build()
+                .showDialog(gui);
+        String phone = new TextInputDialogBuilder().setTitle("Phone").setInitialContent(currentPhone).build()
+                .showDialog(gui);
+        // Address is not in table, so we ask for it blank or keep it simple
+        String address = new TextInputDialogBuilder().setTitle("Address").build().showDialog(gui);
+        String city = new TextInputDialogBuilder().setTitle("City").setInitialContent(currentCity).build()
+                .showDialog(gui);
+
+        com.example.vetclinic.cli.model.UpdateOwnerRequest request = new com.example.vetclinic.cli.model.UpdateOwnerRequest(
+                firstName, lastName, email, phone, address, city);
+        Owner updated = ownerService.updateOwner(id, request);
+
+        if (updated != null) {
+            MessageDialog.showMessageDialog(gui, "Success", "Owner updated.");
+            refreshTable();
+        } else {
+            MessageDialog.showMessageDialog(gui, "Error", "Failed to update owner.");
         }
     }
 

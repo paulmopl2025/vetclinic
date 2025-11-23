@@ -2,6 +2,7 @@ package com.example.vetclinic.cli.client;
 
 import com.example.vetclinic.cli.model.CreatePetRequest;
 import com.example.vetclinic.cli.model.Pet;
+import com.example.vetclinic.cli.model.UpdatePetRequest;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -15,11 +16,12 @@ public interface PetClient {
     Call<Pet> getPetById(@Header("Authorization") String token, @Path("id") Long id);
 
     @POST("pets")
-    Call<Pet> createPet(@Header("Authorization") String token, @Body CreatePetRequest request);
+    Call<Pet> createPet(@retrofit2.http.Header("Authorization") String token, @Body CreatePetRequest request);
 
-    @PUT("pets/{id}")
-    Call<Pet> updatePet(@Header("Authorization") String token, @Path("id") Long id, @Body CreatePetRequest request);
+    @retrofit2.http.PUT("pets/{id}")
+    Call<Pet> updatePet(@retrofit2.http.Header("Authorization") String token, @Path("id") Long id,
+            @Body UpdatePetRequest request);
 
-    @DELETE("pets/{id}")
-    Call<Void> deletePet(@Header("Authorization") String token, @Path("id") Long id);
+    @retrofit2.http.DELETE("pets/{id}")
+    Call<Void> deletePet(@retrofit2.http.Header("Authorization") String token, @Path("id") Long id);
 }

@@ -48,6 +48,18 @@ public class OwnerService {
         return null;
     }
 
+    public Owner updateOwner(Long id, com.example.vetclinic.cli.model.UpdateOwnerRequest request) {
+        try {
+            Response<Owner> response = ownerClient.updateOwner(getToken(), id, request).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean deleteOwner(Long id) {
         try {
             Response<Void> response = ownerClient.deleteOwner(getToken(), id).execute();

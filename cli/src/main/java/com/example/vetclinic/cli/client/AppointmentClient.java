@@ -17,10 +17,9 @@ public interface AppointmentClient {
     @POST("appointments")
     Call<Appointment> createAppointment(@Header("Authorization") String token, @Body CreateAppointmentRequest request);
 
-    @PUT("appointments/{id}/status")
-    Call<Appointment> updateStatus(@Header("Authorization") String token, @Path("id") Long id,
-            @Query("status") String status);
+    @PATCH("appointments/{id}/confirm")
+    Call<Appointment> confirmAppointment(@Header("Authorization") String token, @Path("id") Long id);
 
-    @DELETE("appointments/{id}")
-    Call<Void> cancelAppointment(@Header("Authorization") String token, @Path("id") Long id);
+    @PATCH("appointments/{id}/cancel")
+    Call<Appointment> cancelAppointment(@Header("Authorization") String token, @Path("id") Long id);
 }

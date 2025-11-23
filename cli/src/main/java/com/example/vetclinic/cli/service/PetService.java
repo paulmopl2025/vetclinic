@@ -48,6 +48,18 @@ public class PetService {
         return null;
     }
 
+    public Pet updatePet(Long id, com.example.vetclinic.cli.model.UpdatePetRequest request) {
+        try {
+            Response<Pet> response = petClient.updatePet(getToken(), id, request).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean deletePet(Long id) {
         try {
             Response<Void> response = petClient.deletePet(getToken(), id).execute();

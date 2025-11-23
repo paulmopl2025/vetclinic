@@ -16,13 +16,16 @@ import java.util.List;
 public class PetsWindow extends BasicWindow {
 
     private final PetService petService;
+    private final com.example.vetclinic.cli.service.OwnerService ownerService;
     private final WindowBasedTextGUI gui;
     private final Table<String> table;
 
-    public PetsWindow(WindowBasedTextGUI gui, PetService petService) {
+    public PetsWindow(WindowBasedTextGUI gui, PetService petService,
+            com.example.vetclinic.cli.service.OwnerService ownerService) {
         super("Pets Management");
         this.gui = gui;
         this.petService = petService;
+        this.ownerService = ownerService;
 
         Panel rootPanel = new Panel();
         rootPanel.setLayoutManager(new BorderLayout());
@@ -45,7 +48,7 @@ public class PetsWindow extends BasicWindow {
             new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
                     .setTitle("Options")
                     .setDescription("Select an action")
-                    .addAction("Edit", () -> MessageDialog.showMessageDialog(gui, "Info", "Edit not implemented yet"))
+                    .addAction("Edit", this::editPet)
                     .addAction("Delete", this::deletePet)
                     .addAction("Cancel", () -> {
                     })
@@ -75,6 +78,24 @@ public class PetsWindow extends BasicWindow {
     }
 
     private void createPet() {
+        // Select Owner
+        List<com.example.vetclinic.cli.model.Owner> owners = ownerService.getAllOwners();
+        if (owners.isEmpty()) {
+            MessageDialog.showMessageDialog(gui, "Error", "No owners found. Create an owner first.");
+            return;
+        }
+        com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder ownerSelector = new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
+                .setTitle("Select Owner");
+        final java.util.concurrent.atomic.AtomicReference<Long> selectedOwnerId = new java.util.concurrent.atomic.AtomicReference<>();
+        for (com.example.vetclinic.cli.model.Owner owner : owners) {
+            ownerSelector.addAction(owner.getFirstName() + " " + owner.getLastName() + " (ID: " + owner.getId() + ")",
+                    () -> selectedOwnerId.set(owner.getId()));
+        }
+        ownerSelector.build().showDialog(gui);
+        if (selectedOwnerId.get() == null)
+            return;
+        Long ownerId = selectedOwnerId.get();
+
         String name = new TextInputDialogBuilder().setTitle("Name").build().showDialog(gui);
         if (name == null)
             return;
@@ -82,11 +103,9 @@ public class PetsWindow extends BasicWindow {
         String species = new TextInputDialogBuilder().setTitle("Species").build().showDialog(gui);
         String breed = new TextInputDialogBuilder().setTitle("Breed").build().showDialog(gui);
         String birthDateStr = new TextInputDialogBuilder().setTitle("Birth Date (YYYY-MM-DD)").build().showDialog(gui);
-        String ownerIdStr = new TextInputDialogBuilder().setTitle("Owner ID").build().showDialog(gui);
 
         try {
             LocalDate birthDate = LocalDate.parse(birthDateStr);
-            Long ownerId = Long.parseLong(ownerIdStr);
 
             CreatePetRequest request = new CreatePetRequest(name, species, breed, birthDate, ownerId);
             Pet created = petService.createPet(request);
@@ -124,6 +143,70 @@ public class PetsWindow extends BasicWindow {
             } else {
                 MessageDialog.showMessageDialog(gui, "Error", "Failed to delete pet.");
             }
+        }
+    }
+
+    private void editPet() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            MessageDialog.showMessageDialog(gui, "Warning", "Please select a pet to edit.");
+            return;
+        }
+
+        String idStr = table.getTableModel().getCell(0, selectedRow);
+        Long id = Long.parseLong(idStr);
+
+        String currentName = table.getTableModel().getCell(1, selectedRow);
+        String currentSpecies = table.getTableModel().getCell(2, selectedRow);
+        String currentBreed = table.getTableModel().getCell(3, selectedRow);
+
+        // Select Owner (Optional: keep current or change)
+        List<com.example.vetclinic.cli.model.Owner> owners = ownerService.getAllOwners();
+        com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder ownerSelector = new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
+                .setTitle("Select Owner (Current: " + table.getTableModel().getCell(4, selectedRow) + ")");
+        final java.util.concurrent.atomic.AtomicReference<Long> selectedOwnerId = new java.util.concurrent.atomic.AtomicReference<>();
+
+        // Add option to keep current owner if we could parse it, but for now just force
+        // selection or maybe default to first?
+        // Better: just list all owners.
+        for (com.example.vetclinic.cli.model.Owner owner : owners) {
+            ownerSelector.addAction(owner.getFirstName() + " " + owner.getLastName() + " (ID: " + owner.getId() + ")",
+                    () -> selectedOwnerId.set(owner.getId()));
+        }
+        ownerSelector.build().showDialog(gui);
+        if (selectedOwnerId.get() == null)
+            return;
+        Long ownerId = selectedOwnerId.get();
+
+        String name = new TextInputDialogBuilder().setTitle("Name").setInitialContent(currentName).build()
+                .showDialog(gui);
+        if (name == null)
+            return;
+
+        String species = new TextInputDialogBuilder().setTitle("Species").setInitialContent(currentSpecies).build()
+                .showDialog(gui);
+        String breed = new TextInputDialogBuilder().setTitle("Breed").setInitialContent(currentBreed).build()
+                .showDialog(gui);
+        // BirthDate is not easily available in table in correct format, so we ask for
+        // it again or use current date as placeholder
+        String birthDateStr = new TextInputDialogBuilder().setTitle("Birth Date (YYYY-MM-DD)")
+                .setInitialContent(LocalDate.now().toString()).build().showDialog(gui);
+
+        try {
+            LocalDate birthDate = LocalDate.parse(birthDateStr);
+
+            com.example.vetclinic.cli.model.UpdatePetRequest request = new com.example.vetclinic.cli.model.UpdatePetRequest(
+                    name, species, breed, birthDate, ownerId);
+            Pet updated = petService.updatePet(id, request);
+
+            if (updated != null) {
+                MessageDialog.showMessageDialog(gui, "Success", "Pet updated.");
+                refreshTable();
+            } else {
+                MessageDialog.showMessageDialog(gui, "Error", "Failed to update pet.");
+            }
+        } catch (DateTimeParseException | NumberFormatException e) {
+            MessageDialog.showMessageDialog(gui, "Error", "Invalid input format.");
         }
     }
 

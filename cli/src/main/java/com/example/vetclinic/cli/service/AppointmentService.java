@@ -41,6 +41,12 @@ public class AppointmentService {
             Response<Appointment> response = appointmentClient.createAppointment(getToken(), request).execute();
             if (response.isSuccessful()) {
                 return response.body();
+            } else {
+                System.err.println("Failed to create appointment: " + response.code() + " " + response.message());
+                if (response.errorBody() != null) {
+                    String errorBody = response.errorBody().string();
+                    System.err.println("Error details: " + errorBody);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,9 +54,19 @@ public class AppointmentService {
         return null;
     }
 
-    public boolean updateStatus(Long id, String status) {
+    public boolean confirmAppointment(Long id) {
         try {
-            Response<Appointment> response = appointmentClient.updateStatus(getToken(), id, status).execute();
+            Response<Appointment> response = appointmentClient.confirmAppointment(getToken(), id).execute();
+            return response.isSuccessful();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean cancelAppointment(Long id) {
+        try {
+            Response<Appointment> response = appointmentClient.cancelAppointment(getToken(), id).execute();
             return response.isSuccessful();
         } catch (IOException e) {
             e.printStackTrace();

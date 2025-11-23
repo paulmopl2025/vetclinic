@@ -17,13 +17,22 @@ import java.util.List;
 public class AppointmentsWindow extends BasicWindow {
 
     private final AppointmentService appointmentService;
+    private final com.example.vetclinic.cli.service.PetService petService;
+    private final com.example.vetclinic.cli.service.UserService userService;
+    private final com.example.vetclinic.cli.service.ServiceService serviceService;
     private final WindowBasedTextGUI gui;
     private final Table<String> table;
 
-    public AppointmentsWindow(WindowBasedTextGUI gui, AppointmentService appointmentService) {
+    public AppointmentsWindow(WindowBasedTextGUI gui, AppointmentService appointmentService,
+            com.example.vetclinic.cli.service.PetService petService,
+            com.example.vetclinic.cli.service.UserService userService,
+            com.example.vetclinic.cli.service.ServiceService serviceService) {
         super("Appointments Management");
         this.gui = gui;
         this.appointmentService = appointmentService;
+        this.petService = petService;
+        this.userService = userService;
+        this.serviceService = serviceService;
 
         Panel rootPanel = new Panel();
         rootPanel.setLayoutManager(new BorderLayout());
@@ -79,6 +88,59 @@ public class AppointmentsWindow extends BasicWindow {
     }
 
     private void createAppointment() {
+        // Select Pet
+        List<com.example.vetclinic.cli.model.Pet> pets = petService.getAllPets();
+        if (pets.isEmpty()) {
+            MessageDialog.showMessageDialog(gui, "Error", "No pets found. Create a pet first.");
+            return;
+        }
+        com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder petSelector = new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
+                .setTitle("Select Pet");
+        final java.util.concurrent.atomic.AtomicReference<Long> selectedPetId = new java.util.concurrent.atomic.AtomicReference<>();
+        for (com.example.vetclinic.cli.model.Pet pet : pets) {
+            petSelector.addAction(pet.getName() + " (ID: " + pet.getId() + ")", () -> selectedPetId.set(pet.getId()));
+        }
+        petSelector.build().showDialog(gui);
+        if (selectedPetId.get() == null)
+            return;
+        Long petId = selectedPetId.get();
+
+        // Select Vet
+        List<com.example.vetclinic.cli.model.UserDTO> vets = userService.getVets();
+        if (vets.isEmpty()) {
+            MessageDialog.showMessageDialog(gui, "Error", "No vets found.");
+            return;
+        }
+        com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder vetSelector = new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
+                .setTitle("Select Vet");
+        final java.util.concurrent.atomic.AtomicReference<Long> selectedVetId = new java.util.concurrent.atomic.AtomicReference<>();
+        for (com.example.vetclinic.cli.model.UserDTO vet : vets) {
+            vetSelector.addAction(vet.getDisplayName() + " (ID: " + vet.getId() + ")",
+                    () -> selectedVetId.set(vet.getId()));
+        }
+        vetSelector.build().showDialog(gui);
+        if (selectedVetId.get() == null)
+            return;
+        Long vetId = selectedVetId.get();
+
+        // Select Service
+        List<com.example.vetclinic.cli.model.ServiceDTO> services = serviceService.getAllServices();
+        if (services.isEmpty()) {
+            MessageDialog.showMessageDialog(gui, "Error", "No services found.");
+            return;
+        }
+        com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder serviceSelector = new com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder()
+                .setTitle("Select Service");
+        final java.util.concurrent.atomic.AtomicReference<Long> selectedServiceId = new java.util.concurrent.atomic.AtomicReference<>();
+        for (com.example.vetclinic.cli.model.ServiceDTO service : services) {
+            serviceSelector.addAction(service.getName() + " (ID: " + service.getId() + ")",
+                    () -> selectedServiceId.set(service.getId()));
+        }
+        serviceSelector.build().showDialog(gui);
+        if (selectedServiceId.get() == null)
+            return;
+        Long serviceId = selectedServiceId.get();
+
         String dateStr = new TextInputDialogBuilder()
                 .setTitle("Date (YYYY-MM-DD)")
                 .setInitialContent(java.time.LocalDate.now().toString())
@@ -97,15 +159,9 @@ public class AppointmentsWindow extends BasicWindow {
             return;
 
         String notes = new TextInputDialogBuilder().setTitle("Notes").build().showDialog(gui);
-        String petIdStr = new TextInputDialogBuilder().setTitle("Pet ID").build().showDialog(gui);
-        String vetIdStr = new TextInputDialogBuilder().setTitle("Vet ID").build().showDialog(gui);
-        String serviceIdStr = new TextInputDialogBuilder().setTitle("Service ID").build().showDialog(gui);
 
         try {
             LocalDateTime dateTime = LocalDateTime.parse(dateStr + "T" + timeStr);
-            Long petId = Long.parseLong(petIdStr);
-            Long vetId = Long.parseLong(vetIdStr);
-            Long serviceId = Long.parseLong(serviceIdStr);
 
             CreateAppointmentRequest request = new CreateAppointmentRequest(dateTime, notes, petId, vetId, serviceId);
             Appointment created = appointmentService.createAppointment(request);
@@ -131,11 +187,25 @@ public class AppointmentsWindow extends BasicWindow {
         String idStr = table.getTableModel().getCell(0, selectedRow);
         Long id = Long.parseLong(idStr);
 
-        if (appointmentService.updateStatus(id, status)) {
-            MessageDialog.showMessageDialog(gui, "Success", "Appointment status updated to " + status);
-            refreshTable();
-        } else {
-            MessageDialog.showMessageDialog(gui, "Error", "Failed to update status.");
+        com.googlecode.lanterna.gui2.dialogs.MessageDialogButton result = com.googlecode.lanterna.gui2.dialogs.MessageDialog
+                .showMessageDialog(gui, "Confirm", "Update status to " + status + "?",
+                        com.googlecode.lanterna.gui2.dialogs.MessageDialogButton.Yes,
+                        com.googlecode.lanterna.gui2.dialogs.MessageDialogButton.No);
+
+        if (result == com.googlecode.lanterna.gui2.dialogs.MessageDialogButton.Yes) {
+            boolean success = false;
+            if ("CONFIRMED".equals(status)) {
+                success = appointmentService.confirmAppointment(id);
+            } else if ("CANCELLED".equals(status)) {
+                success = appointmentService.cancelAppointment(id);
+            }
+
+            if (success) {
+                MessageDialog.showMessageDialog(gui, "Success", "Appointment status updated to " + status);
+                refreshTable();
+            } else {
+                MessageDialog.showMessageDialog(gui, "Error", "Failed to update status.");
+            }
         }
     }
 

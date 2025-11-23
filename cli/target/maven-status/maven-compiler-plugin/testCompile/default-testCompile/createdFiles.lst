@@ -1,0 +1,8 @@
+com/example/vetclinic/cli/e2e/OwnerE2ETest.class
+com/example/vetclinic/cli/e2e/ClinicServiceE2ETest.class
+com/example/vetclinic/cli/e2e/BaseE2ETest.class
+com/example/vetclinic/cli/e2e/PetE2ETest.class
+com/example/vetclinic/cli/e2e/VetE2ETest.class
+com/example/vetclinic/cli/e2e/AuthE2ETest.class
+com/example/vetclinic/cli/e2e/MedicalRecordE2ETest.class
+com/example/vetclinic/cli/e2e/AppointmentE2ETest.class

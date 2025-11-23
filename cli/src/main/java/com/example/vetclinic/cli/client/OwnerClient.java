@@ -2,6 +2,7 @@ package com.example.vetclinic.cli.client;
 
 import com.example.vetclinic.cli.model.CreateOwnerRequest;
 import com.example.vetclinic.cli.model.Owner;
+import com.example.vetclinic.cli.model.UpdateOwnerRequest;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -19,7 +20,7 @@ public interface OwnerClient {
 
     @PUT("owners/{id}")
     Call<Owner> updateOwner(@Header("Authorization") String token, @Path("id") Long id,
-            @Body CreateOwnerRequest request);
+            @Body UpdateOwnerRequest request);
 
     @DELETE("owners/{id}")
     Call<Void> deleteOwner(@Header("Authorization") String token, @Path("id") Long id);

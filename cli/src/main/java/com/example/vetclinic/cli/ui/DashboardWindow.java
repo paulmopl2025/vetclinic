@@ -42,6 +42,7 @@ public class DashboardWindow extends BasicWindow {
         sidebarPanel.addComponent(new Button("Owners", this::showOwners));
         sidebarPanel.addComponent(new Button("Pets", this::showPets));
         sidebarPanel.addComponent(new Button("Appointments", this::showAppointments));
+        sidebarPanel.addComponent(new Button("Medical History", this::showMedicalHistory));
 
         if ("ADMIN".equals(authService.getSession().getRole())) {
             sidebarPanel.addComponent(new Button("Users", this::showUsers));
@@ -82,11 +83,24 @@ public class DashboardWindow extends BasicWindow {
     }
 
     private void showPets() {
-        new PetsWindow(gui, new com.example.vetclinic.cli.service.PetService(authService)).show();
+        new PetsWindow(gui,
+                new com.example.vetclinic.cli.service.PetService(authService),
+                new com.example.vetclinic.cli.service.OwnerService(authService)).show();
     }
 
     private void showAppointments() {
-        new AppointmentsWindow(gui, new com.example.vetclinic.cli.service.AppointmentService(authService)).show();
+        new AppointmentsWindow(gui,
+                new com.example.vetclinic.cli.service.AppointmentService(authService),
+                new com.example.vetclinic.cli.service.PetService(authService),
+                new com.example.vetclinic.cli.service.UserService(authService),
+                new com.example.vetclinic.cli.service.ServiceService(authService)).show();
+    }
+
+    private void showMedicalHistory() {
+        new com.example.vetclinic.cli.ui.modules.MedicalHistoryWindow(gui,
+                new com.example.vetclinic.cli.service.MedicalRecordService(authService),
+                new com.example.vetclinic.cli.service.PetService(authService),
+                new com.example.vetclinic.cli.service.UserService(authService)).show();
     }
 
     private void showUsers() {
