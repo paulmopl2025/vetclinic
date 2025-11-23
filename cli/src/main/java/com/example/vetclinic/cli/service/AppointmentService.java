@@ -73,4 +73,20 @@ public class AppointmentService {
             return false;
         }
     }
+
+    public List<Appointment> getAppointmentsByVetAndDate(Long vetId, java.time.LocalDate date) {
+        try {
+            Response<List<Appointment>> response = appointmentClient.getAppointmentsByVet(getToken(), vetId).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                // Filter by date
+                return response.body().stream()
+                        .filter(appt -> appt.getAppointmentDate().toLocalDate().equals(date))
+                        .filter(appt -> !"CANCELLED".equals(appt.getStatus()))
+                        .collect(java.util.stream.Collectors.toList());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 }

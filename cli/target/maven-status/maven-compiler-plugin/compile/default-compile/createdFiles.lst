@@ -21,6 +21,7 @@ com/example/vetclinic/cli/model/MedicalRecord.class
 com/example/vetclinic/cli/model/CreatePetRequest.class
 com/example/vetclinic/cli/storage/StorageService.class
 com/example/vetclinic/cli/client/UserClient.class
+com/example/vetclinic/cli/ui/components/CalendarDialog.class
 com/example/vetclinic/cli/model/CreateAppointmentRequest.class
 com/example/vetclinic/cli/service/ClinicService.class
 com/example/vetclinic/cli/ui/DashboardWindow.class
@@ -40,6 +41,7 @@ com/example/vetclinic/cli/ui/modules/AppointmentsWindow.class
 com/example/vetclinic/cli/service/ServiceService.class
 com/example/vetclinic/cli/ui/modules/ClinicStatsWindow.class
 com/example/vetclinic/cli/service/OwnerService.class
+com/example/vetclinic/cli/ui/components/TimeSlotSelector.class
 com/example/vetclinic/cli/service/AppointmentService.class
 com/example/vetclinic/cli/model/CreateMedicalRecordRequest.class
 com/example/vetclinic/cli/service/UserService.class

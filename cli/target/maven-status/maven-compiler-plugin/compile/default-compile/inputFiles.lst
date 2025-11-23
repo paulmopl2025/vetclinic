@@ -37,6 +37,8 @@
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/storage/StorageService.java
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/DashboardWindow.java
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/LoginWindow.java
+/Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/components/CalendarDialog.java
+/Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/components/TimeSlotSelector.java
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/modules/AppointmentsWindow.java
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/modules/ClinicStatsWindow.java
 /Users/paulmoreno/Documents/proyectosJAVA/java-maven-struct-for-paul/cli/src/main/java/com/example/vetclinic/cli/ui/modules/MedicalHistoryWindow.java

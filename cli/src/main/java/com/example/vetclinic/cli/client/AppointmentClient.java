@@ -14,6 +14,9 @@ public interface AppointmentClient {
     @GET("appointments/{id}")
     Call<Appointment> getAppointmentById(@Header("Authorization") String token, @Path("id") Long id);
 
+    @GET("appointments/vet/{vetId}")
+    Call<List<Appointment>> getAppointmentsByVet(@Header("Authorization") String token, @Path("vetId") Long vetId);
+
     @POST("appointments")
     Call<Appointment> createAppointment(@Header("Authorization") String token, @Body CreateAppointmentRequest request);
 

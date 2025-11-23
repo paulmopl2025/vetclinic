@@ -141,47 +141,55 @@ public class AppointmentsWindow extends BasicWindow {
             return;
         Long serviceId = selectedServiceId.get();
 
-        String dateStr = new TextInputDialogBuilder()
-                .setTitle("Date (YYYY-MM-DD)")
-                .setInitialContent(java.time.LocalDate.now().plusDays(1).toString())
-                .build()
-                .showDialog(gui);
-        if (dateStr == null)
-            return;
+        // Get service duration for availability checking
+        com.example.vetclinic.cli.model.ServiceDTO selectedService = services.stream()
+                .filter(s -> s.getId().equals(serviceId))
+                .findFirst()
+                .orElse(null);
 
-        String timeStr = new TextInputDialogBuilder()
-                .setTitle("Time (HH:MM)")
-                .setInitialContent(
-                        java.time.LocalTime.now().truncatedTo(java.time.temporal.ChronoUnit.MINUTES).toString())
-                .build()
-                .showDialog(gui);
-        if (timeStr == null)
-            return;
+        int serviceDuration = (selectedService != null && selectedService.getEstimatedDurationMinutes() != null)
+                ? selectedService.getEstimatedDurationMinutes()
+                : 30; // Default 30 minutes
 
-        String notes = new TextInputDialogBuilder().setTitle("Notes").build().showDialog(gui);
+        // Use calendar dialog for date selection
+        java.time.LocalDate selectedDate = com.example.vetclinic.cli.ui.components.CalendarDialog.showCalendar(
+                gui, "Select Appointment Date");
+
+        if (selectedDate == null) {
+            return;
+        }
+
+        // Get existing appointments for the selected vet and date
+        List<Appointment> existingAppointments = appointmentService.getAppointmentsByVetAndDate(vetId, selectedDate);
+
+        // Use time slot selector to show only available times
+        LocalDateTime selectedDateTime = com.example.vetclinic.cli.ui.components.TimeSlotSelector.selectTimeSlot(
+                gui, selectedDate, existingAppointments, serviceDuration);
+
+        if (selectedDateTime == null) {
+            return;
+        }
+
+        String notes = new TextInputDialogBuilder().setTitle("Notes (Optional)").build().showDialog(gui);
 
         try {
-            LocalDateTime dateTime = LocalDateTime.parse(dateStr + "T" + timeStr);
-
-            // Validate that the date is in the future
-            if (dateTime.isBefore(LocalDateTime.now())) {
-                MessageDialog.showMessageDialog(gui, "Error",
-                        "Appointment date must be in the future.\nPlease select a date and time after now.");
-                return;
-            }
-
-            CreateAppointmentRequest request = new CreateAppointmentRequest(dateTime, notes, petId, vetId, serviceId);
+            CreateAppointmentRequest request = new CreateAppointmentRequest(selectedDateTime, notes, petId, vetId,
+                    serviceId);
             Appointment created = appointmentService.createAppointment(request);
 
             if (created != null) {
-                MessageDialog.showMessageDialog(gui, "Success", "Appointment created with ID: " + created.getId());
+                MessageDialog.showMessageDialog(gui, "Success",
+                        "Appointment created successfully!\n\nDate: " + selectedDateTime.toLocalDate() +
+                                "\nTime: " + selectedDateTime.toLocalTime() +
+                                "\nID: " + created.getId());
                 refreshTable();
             } else {
                 MessageDialog.showMessageDialog(gui, "Error",
                         "Failed to create appointment.\nCheck console for details.");
             }
-        } catch (DateTimeParseException | NumberFormatException e) {
-            MessageDialog.showMessageDialog(gui, "Error", "Invalid input format.\nDate: YYYY-MM-DD\nTime: HH:MM");
+        } catch (Exception e) {
+            MessageDialog.showMessageDialog(gui, "Error", "An error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

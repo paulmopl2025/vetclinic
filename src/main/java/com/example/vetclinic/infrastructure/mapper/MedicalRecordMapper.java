@@ -16,7 +16,7 @@ public interface MedicalRecordMapper {
     @Mapping(source = "pet.id", target = "petId")
     @Mapping(source = "pet.name", target = "petName")
     @Mapping(source = "vet.id", target = "vetId")
-    @Mapping(source = "vet.firstName", target = "vetName")
+    @Mapping(target = "vetName", expression = "java(medicalRecord.getVet().getFirstName() + \" \" + medicalRecord.getVet().getLastName())")
     @Mapping(source = "appointment.id", target = "appointmentId")
     MedicalRecordDTO toDTO(MedicalRecord medicalRecord);
 

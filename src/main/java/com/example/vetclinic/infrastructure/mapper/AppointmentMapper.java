@@ -16,7 +16,7 @@ public interface AppointmentMapper {
     @Mapping(source = "pet.id", target = "petId")
     @Mapping(source = "pet.name", target = "petName")
     @Mapping(source = "vet.id", target = "vetId")
-    @Mapping(source = "vet.firstName", target = "vetName")
+    @Mapping(target = "vetName", expression = "java(appointment.getVet().getFirstName() + \" \" + appointment.getVet().getLastName())")
     @Mapping(source = "service.id", target = "serviceId")
     @Mapping(source = "service.name", target = "serviceName")
     AppointmentDTO toDTO(Appointment appointment);
