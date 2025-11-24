@@ -26,42 +26,42 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Get all appointments", description = "Retrieve a list of all appointments")
     public ResponseEntity<List<AppointmentDTO>> getAllAppointments() {
         return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Get appointment by ID", description = "Retrieve appointment details by ID")
     public ResponseEntity<AppointmentDTO> getAppointmentById(@PathVariable Long id) {
         return ResponseEntity.ok(appointmentService.getAppointmentById(id));
     }
 
     @GetMapping("/pet/{petId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Get appointments by pet", description = "Retrieve all appointments for a specific pet")
     public ResponseEntity<List<AppointmentDTO>> getAppointmentsByPet(@PathVariable Long petId) {
         return ResponseEntity.ok(appointmentService.getAppointmentsByPet(petId));
     }
 
     @GetMapping("/vet/{vetId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VET')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Get appointments by vet", description = "Retrieve all appointments for a specific veterinarian")
     public ResponseEntity<List<AppointmentDTO>> getAppointmentsByVet(@PathVariable Long vetId) {
         return ResponseEntity.ok(appointmentService.getAppointmentsByVet(vetId));
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Create appointment", description = "Schedule a new appointment")
     public ResponseEntity<AppointmentDTO> createAppointment(@Valid @RequestBody CreateAppointmentDTO createDTO) {
         return new ResponseEntity<>(appointmentService.createAppointment(createDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Update appointment", description = "Update appointment details")
     public ResponseEntity<AppointmentDTO> updateAppointment(
             @PathVariable Long id,
@@ -70,14 +70,14 @@ public class AppointmentController {
     }
 
     @PatchMapping("/{id}/confirm")
-    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Confirm appointment", description = "Confirm a pending appointment")
     public ResponseEntity<AppointmentDTO> confirmAppointment(@PathVariable Long id) {
         return ResponseEntity.ok(appointmentService.confirmAppointment(id));
     }
 
     @PatchMapping("/{id}/cancel")
-    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'VET', 'RECEPCIONISTA', 'USER')")
     @Operation(summary = "Cancel appointment", description = "Cancel an appointment")
     public ResponseEntity<AppointmentDTO> cancelAppointment(@PathVariable Long id) {
         return ResponseEntity.ok(appointmentService.cancelAppointment(id));

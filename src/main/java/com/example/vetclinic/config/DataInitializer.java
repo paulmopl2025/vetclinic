@@ -33,25 +33,38 @@ public class DataInitializer implements CommandLineRunner {
         Role recepcionistaRole = roleRepository.findByName("ROLE_RECEPCIONISTA")
                 .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_RECEPCIONISTA").build()));
 
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_USER").build()));
+
         // Create or update admin user
-        User admin = userRepository.findByUsername("admin").orElse(null);
-        if (admin == null) {
-            admin = User.builder()
-                    .username("admin")
-                    .email("admin@vetclinic.com")
-                    .password(passwordEncoder.encode("admin123"))
-                    .roles(Set.of(adminRole))
+        createOrUpdateUser("admin", "admin@vetclinic.com", "admin123", Set.of(adminRole));
+
+        // Create or update test users
+        createOrUpdateUser("vet1", "maria.gonzalez@vetclinic.com", "password123", Set.of(vetRole));
+        createOrUpdateUser("vet2", "carlos.rodriguez@vetclinic.com", "password123", Set.of(vetRole));
+        createOrUpdateUser("recepcionista1", "ana.martinez@vetclinic.com", "password123", Set.of(recepcionistaRole));
+        createOrUpdateUser("user1", "juan.perez@email.com", "password123", Set.of(userRole));
+    }
+
+    private void createOrUpdateUser(String username, String email, String password, Set<Role> roles) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            user = User.builder()
+                    .username(username)
+                    .email(email)
+                    .password(passwordEncoder.encode(password))
+                    .roles(roles)
                     .build();
-            userRepository.save(admin);
-            log.info("Admin user created: admin / admin123");
+            userRepository.save(user);
+            log.info("User created: {} / {}", username, password);
         } else {
             // Update password if it was created with wrong password from data.sql
-            admin.setPassword(passwordEncoder.encode("admin123"));
-            if (admin.getRoles().isEmpty() || !admin.getRoles().contains(adminRole)) {
-                admin.setRoles(Set.of(adminRole));
+            user.setPassword(passwordEncoder.encode(password));
+            if (user.getRoles().isEmpty() || !user.getRoles().containsAll(roles)) {
+                user.setRoles(roles);
             }
-            userRepository.save(admin);
-            log.info("Admin user updated: admin / admin123");
+            userRepository.save(user);
+            log.info("User updated: {} / {}", username, password);
         }
     }
 }
